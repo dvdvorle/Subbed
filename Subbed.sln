@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{C0FC480C-58BC-4D45-B995-0EA9A0AA1F32}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI", "CLI\CLI.csproj", "{9EAEA6C4-A56C-4ACB-B5D0-AF620C8A4DAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{C0FC480C-58BC-4D45-B995-0EA9A0AA1F32}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C0FC480C-58BC-4D45-B995-0EA9A0AA1F32}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C0FC480C-58BC-4D45-B995-0EA9A0AA1F32}.Release|x86.ActiveCfg = Release|Any CPU
+		{9EAEA6C4-A56C-4ACB-B5D0-AF620C8A4DAE}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9EAEA6C4-A56C-4ACB-B5D0-AF620C8A4DAE}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{9EAEA6C4-A56C-4ACB-B5D0-AF620C8A4DAE}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{9EAEA6C4-A56C-4ACB-B5D0-AF620C8A4DAE}.Debug|x86.ActiveCfg = Debug|x86
+		{9EAEA6C4-A56C-4ACB-B5D0-AF620C8A4DAE}.Debug|x86.Build.0 = Debug|x86
+		{9EAEA6C4-A56C-4ACB-B5D0-AF620C8A4DAE}.Release|Any CPU.ActiveCfg = Release|x86
+		{9EAEA6C4-A56C-4ACB-B5D0-AF620C8A4DAE}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{9EAEA6C4-A56C-4ACB-B5D0-AF620C8A4DAE}.Release|Mixed Platforms.Build.0 = Release|x86
+		{9EAEA6C4-A56C-4ACB-B5D0-AF620C8A4DAE}.Release|x86.ActiveCfg = Release|x86
+		{9EAEA6C4-A56C-4ACB-B5D0-AF620C8A4DAE}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
