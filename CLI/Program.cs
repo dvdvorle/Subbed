@@ -16,78 +16,34 @@ namespace DvdV.Subbed.CLI
         {
             try
             {
+                var options = new SubbedOptionParser(args);
+
                 var parserFactory = new SubtitleParserFactory();
-                Verbs todo = 0;
-                TimeSpan target = TimeSpan.FromSeconds(0);
-                Func<ISubtitle, bool> filter = s => true;
-                double factor = 0;
+                var reader = parserFactory.GetReaderFor(options.InputFile);
+                var subs = reader.Read(options.InputFile);
+                
+                var subManager = new SubtitleManager(subs);
 
-                var p = new OptionSet()
-                {
-                    { "s|stretchby=",
-                        (double v) => 
-                            { 
-                                todo = Verbs.StretchBy;
-                                factor = v;
-                            } },
-                    { "t|transposeby=",
-                        (double v) =>
-                            {
-                                todo = Verbs.TransposeBy;
-                                target = TimeSpan.FromSeconds(v);
-                            } },
-                    { "e|extrapolate={+}",
-                        (string t,double v) =>
-                            {
-                                todo = Verbs.Extrapolate;
-                                filter = s => s.Text.StartsWith(t);
-                                target = TimeSpan.FromSeconds(v);
-                            } }
-                };
-
-                var fileNames = p.Parse(args);
-
-                if (fileNames.Count() < 1 || fileNames.Count() > 2)
-                {
-                    throw new Exception("Provide 1 or 2 filenames");
-                }
-              
-                string inputFile = fileNames[0];
-
-                bool outputSameAsInput = fileNames.Count() > 1;
-                string outputFile = outputSameAsInput ? fileNames[1] : fileNames[0];
-
-                var reader = parserFactory.GetReaderFor(inputFile);
-                var subs = reader.Read(inputFile);
-                var man = new Subbed.Core.Formats.SubtitleManager(subs);
-
-                switch (todo)
+                switch (options.ActionVerb)
                 {
                     case Verbs.Extrapolate:
-                        var targetSub = subs.FirstOrDefault(filter);
-                        man.Extrapolate(targetSub, target);
-
+                        var targetSub = subs.FirstOrDefault(options.Filter);
+                        subManager.Extrapolate(targetSub, options.Target);
                         break;
                     case Verbs.StretchBy:
-                        man.StretchBy(factor);
-
+                        subManager.StretchBy(options.Factor);
                         break;
                     case Verbs.TransposeBy:
-                        man.TransposeBy(target);
-
+                        subManager.TransposeBy(options.Target);
                         break;
                     default:
-                        Console.WriteLine("Usage: CLI.exe <inputfile> [outputfile] <args>");
-                        Console.WriteLine();
-                        Console.WriteLine("Where <args> is one of:");
-                        p.WriteOptionDescriptions(Console.Out);
                         return;
                 }
 
-                subs = man.Subtitles;
+                subs = subManager.Subtitles;
         
-                var writer = parserFactory.GetWriterFor(outputFile);
-                writer.Write(subs, outputFile);
+                var writer = parserFactory.GetWriterFor(options.OutputFile);
+                writer.Write(subs, options.OutputFile);
             }
             catch (Exception ex)
             {
