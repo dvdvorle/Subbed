@@ -14,7 +14,7 @@ namespace DvdV.Subbed.Tests
         [Test]
         public void test_GetBegin()
         {
-            var begin = SubRip.GetBegin("00:40:43,884 --> 00:40:46,786");
+            var begin = new SubRip().GetBegin("00:40:43,884 --> 00:40:46,786");
 
             Assert.That(begin, Is.EqualTo(new TimeSpan(0, 0, 40, 43, 884)));
         }
@@ -22,7 +22,7 @@ namespace DvdV.Subbed.Tests
         [Test]
         public void test_GetEnd()
         {
-            var end = SubRip.GetEnd("00:40:43,884 --> 00:40:46,786");
+            var end = new SubRip().GetEnd("00:40:43,884 --> 00:40:46,786");
 
             Assert.That(end, Is.EqualTo(new TimeSpan(0, 0, 40, 46, 786)));
         }

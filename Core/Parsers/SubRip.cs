@@ -7,9 +7,9 @@ using DvdV.Subbed.Core.Formats;
 
 namespace DvdV.Subbed.Core.Parsers
 {
-    public static class SubRip
+    public class SubRip : ISubtitleParser
     {
-        public static void Write(IEnumerable<ISubtitle> subtitles, string output)
+        public void Write(IEnumerable<ISubtitle> subtitles, string output)
         {
             List<string> lines = new List<string>();
 
@@ -38,10 +38,15 @@ namespace DvdV.Subbed.Core.Parsers
             File.WriteAllLines(output, lines.ToArray());
         }
 
-        public static IEnumerable<ISubtitle> Read(string input)
+        IEnumerable<ISubtitle> ISubtitleParser.Read(string input)
+        {
+            return Read(input);
+        }
+
+        public IEnumerable<BaseBeginEndSubtitle> Read(string input)
         {
             string[] lines = File.ReadAllLines(input);
-            List<ISubtitle> subs = new List<ISubtitle>();
+            List<BaseBeginEndSubtitle> subs = new List<BaseBeginEndSubtitle>();
 
             SubRipStatus status = SubRipStatus.ParseNumber;
             TimeSpan begin = new TimeSpan();
@@ -94,25 +99,27 @@ namespace DvdV.Subbed.Core.Parsers
             return subs;
         }
 
-        internal static TimeSpan GetBegin(string line)
+        internal TimeSpan GetBegin(string line)
         {
             string beginText = line.Split(' ')[0];
             string[] beginTokens = beginText.Split(new char[] { ':', ',' });
             return new TimeSpan(0, int.Parse(beginTokens[0]), int.Parse(beginTokens[1]), int.Parse(beginTokens[2]), int.Parse(beginTokens[3]));
         }
 
-        internal static TimeSpan GetEnd(string line)
+        internal TimeSpan GetEnd(string line)
         {
             string endText = line.Split(' ')[2];
             string[] endTokens = endText.Split(new char[] { ':', ',' });
             return new TimeSpan(0, int.Parse(endTokens[0]), int.Parse(endTokens[1]), int.Parse(endTokens[2]), int.Parse(endTokens[3]));
         }
+
+        enum SubRipStatus
+        {
+            ParseNumber,
+            ParseTime,
+            ParseText
+        }
     }
 
-    enum SubRipStatus
-    {
-        ParseNumber,
-        ParseTime,
-        ParseText
-    }
+    
 }

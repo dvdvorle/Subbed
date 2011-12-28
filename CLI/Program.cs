@@ -54,7 +54,7 @@ namespace DvdV.Subbed.CLI
                 bool outputSameAsInput = fileNames.Count() > 1;
                 string outputFile = outputSameAsInput ? fileNames[1] : fileNames[0];
 
-                var subs = Subbed.Core.Parsers.SubRip.Read(inputFile);
+                IEnumerable<ISubtitle> subs = new Subbed.Core.Parsers.SubRip().Read(inputFile);
                 var man = new Subbed.Core.Formats.SubtitleManager(subs);
 
                 switch (todo)
@@ -79,12 +79,14 @@ namespace DvdV.Subbed.CLI
                 }
 
                 subs = man.Subtitles;
-                Subbed.Core.Parsers.SubRip.Write(subs, outputFile);
+                new Subbed.Core.Parsers.SubRip().Write(subs, outputFile);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
         }
+
+        
     }
 }
