@@ -7,7 +7,7 @@ using DvdV.Subbed.Core.Formats;
 
 namespace DvdV.Subbed.Core.Parsers
 {
-    public class SubRip : ISubtitleParser
+    public class SubRipParser : ISubtitleParser
     {
         public void Write(IEnumerable<ISubtitle> subtitles, string output)
         {
