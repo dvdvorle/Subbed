@@ -40,7 +40,7 @@ namespace DvdV.Subbed.CLI
                             } }
                 };
 
-            var fileNames = _options.Parse(args);
+            List<string> fileNames = _options.Parse(args);
 
             if (fileNames.Count() < 1 || fileNames.Count() > 2)
             {
