@@ -21,8 +21,8 @@ namespace DvdV.Subbed.CLI
         }
 
         public Verbs ActionVerb { get; private set; }
-        public TimeSpan Target { get; private set; }
-        public Func<ISubtitle, bool> Filter { get; private set; }
+        public TimeSpan TimeDiff { get; private set; }
+        public Func<ISubtitle, bool> SubtitleSelector { get; private set; }
         public double Factor { get; private set; }
         public string InputFile { get; private set; }
         public string OutputFile { get; private set; }
@@ -37,10 +37,10 @@ namespace DvdV.Subbed.CLI
 
         private void InitProperties()
         {
-            ActionVerb = 0;
-            Target = TimeSpan.FromSeconds(0);
+            ActionVerb = Verbs.Help;
+            TimeDiff = TimeSpan.FromSeconds(0);
             Factor = 0;
-            Filter = s => true;
+            SubtitleSelector = s => true;
         }
 
 
@@ -48,25 +48,31 @@ namespace DvdV.Subbed.CLI
         {
             _options = new OptionSet()
                 {
-                    { "s|stretchby=",
+                    { "s|stretchby=", "",
                         (double v) => 
                             { 
                                 ActionVerb = Verbs.StretchBy;
                                 Factor = v;
-                            } },
+                            }
+                    },
                     { "t|transposeby=",
                         (double v) =>
                             {
                                 ActionVerb = Verbs.TransposeBy;
-                                Target = TimeSpan.FromSeconds(v);
-                            } },
+                                TimeDiff = TimeSpan.FromSeconds(v);
+                            }
+                    },
                     { "e|extrapolate={+}",
                         (string t, double v) =>
                             {
                                 ActionVerb = Verbs.Extrapolate;
-                                Filter = s => s.Text.StartsWith(t);
-                                Target = TimeSpan.FromSeconds(v);
-                            } }
+                                SubtitleSelector = s => s.Text.StartsWith(t);
+                                TimeDiff = TimeSpan.FromSeconds(v);
+                            }
+                    },
+                    { "h|help",
+                        v => ActionVerb = Verbs.Help
+                    }
                 };
         }
 
@@ -74,16 +80,19 @@ namespace DvdV.Subbed.CLI
         {
             List<string> fileNames = _options.Parse(args);
 
-            if (fileNames.Count() < 1 || fileNames.Count() > 2)
+            if (ActionVerb != Verbs.Help)
             {
-                throw new ArgumentException("Provide 1 or 2 filenames");
+                if (fileNames.Count() < 1 || fileNames.Count() > 2)
+                {
+                    throw new ArgumentException("Provide 1 or 2 filenames");
+                }
+
+                InputFile = fileNames[0];
+                CheckIfInputFileExists();
+
+                bool outputSameAsInput = fileNames.Count() > 1;
+                OutputFile = outputSameAsInput ? fileNames[1] : fileNames[0];
             }
-
-            InputFile = fileNames[0];
-            CheckIfInputFileExists();
-
-            bool outputSameAsInput = fileNames.Count() > 1;
-            OutputFile = outputSameAsInput ? fileNames[1] : fileNames[0];
         }
 
         private void CheckIfInputFileExists()

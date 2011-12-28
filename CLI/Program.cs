@@ -17,6 +17,11 @@ namespace DvdV.Subbed.CLI
             try
             {
                 var options = new SubbedOptionParser(args);
+                if (options.ActionVerb == Verbs.Help)
+                {
+                    options.WriteHelp();
+                    return;
+                }
 
                 var parserFactory = new SubtitleParserFactory();
                 ISubtitleParser reader = parserFactory.GetReaderFor(options.InputFile);
@@ -27,17 +32,15 @@ namespace DvdV.Subbed.CLI
                 switch (options.ActionVerb)
                 {
                     case Verbs.Extrapolate:
-                        ISubtitle targetSub = subs.FirstOrDefault(options.Filter);
-                        subManager.Extrapolate(targetSub, options.Target);
+                        ISubtitle targetSub = subs.FirstOrDefault(options.SubtitleSelector);
+                        subManager.Extrapolate(targetSub, options.TimeDiff);
                         break;
                     case Verbs.StretchBy:
                         subManager.StretchBy(options.Factor);
                         break;
                     case Verbs.TransposeBy:
-                        subManager.TransposeBy(options.Target);
+                        subManager.TransposeBy(options.TimeDiff);
                         break;
-                    default:
-                        return;
                 }
 
                 subs = subManager.Subtitles;
