@@ -39,7 +39,7 @@ namespace DvdV.Subbed.Core.Parsers
 
             switch (extension)
             {
-                case "srt":
+                case ".srt":
                     return new SubRipParser();
                 default:
                     throw new UnsupportedSubtitleFormatException(fileName);

@@ -25,23 +25,23 @@ namespace DvdV.Subbed.CLI
                 var p = new OptionSet()
                 {
                     { "s|stretchby=",
-                        v => 
+                        (double v) => 
                             { 
                                 todo = Verbs.StretchBy;
-                                factor = double.Parse(v);
+                                factor = v;
                             } },
                     { "t|transposeby=",
-                        v =>
+                        (double v) =>
                             {
                                 todo = Verbs.TransposeBy;
-                                target = TimeSpan.FromSeconds(double.Parse(v));
+                                target = TimeSpan.FromSeconds(v);
                             } },
                     { "e|extrapolate={+}",
-                        (t, v) =>
+                        (string t,double v) =>
                             {
                                 todo = Verbs.Extrapolate;
                                 filter = s => s.Text.StartsWith(t);
-                                target = TimeSpan.FromSeconds(double.Parse(v));
+                                target = TimeSpan.FromSeconds(v);
                             } }
                 };
 
@@ -77,7 +77,9 @@ namespace DvdV.Subbed.CLI
 
                         break;
                     default:
-                        Console.WriteLine("Usage: CLI.exe [Stuff]");
+                        Console.WriteLine("Usage: CLI.exe <inputfile> [outputfile] <args>");
+                        Console.WriteLine();
+                        Console.WriteLine("Where <args> is one of:");
                         p.WriteOptionDescriptions(Console.Out);
                         return;
                 }
