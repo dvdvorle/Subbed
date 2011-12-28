@@ -16,6 +16,7 @@ namespace DvdV.Subbed.CLI
         {
             try
             {
+                var parserFactory = new SubtitleParserFactory();
                 Verbs todo = 0;
                 TimeSpan target = TimeSpan.FromSeconds(0);
                 Func<ISubtitle, bool> filter = s => true;
@@ -56,7 +57,7 @@ namespace DvdV.Subbed.CLI
                 bool outputSameAsInput = fileNames.Count() > 1;
                 string outputFile = outputSameAsInput ? fileNames[1] : fileNames[0];
 
-                var reader = GetReaderFor(inputFile);
+                var reader = parserFactory.GetReaderFor(inputFile);
                 var subs = reader.Read(inputFile);
                 var man = new Subbed.Core.Formats.SubtitleManager(subs);
 
@@ -83,50 +84,12 @@ namespace DvdV.Subbed.CLI
 
                 subs = man.Subtitles;
         
-                var writer = GetWriterFor(outputFile);
+                var writer = parserFactory.GetWriterFor(outputFile);
                 writer.Write(subs, outputFile);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-            }
-        }
-
-        /// <summary>
-        /// Uses the extension of the filename to return the appropiate parser.
-        /// </summary>
-        /// <param name="inputFileName">A subtitle file</param>
-        /// <returns>A parser for the inputFileName</returns>
-        static ISubtitleParser GetReaderFor(string inputFileName)
-        {
-            return GetParserFor(inputFileName);
-        }
-
-        /// <summary>
-        /// Uses the extension of the filename to return the appropiate parser.
-        /// </summary>
-        /// <param name="outputFileName">A subtitle file</param>
-        /// <returns>A parser for the outputFileName</returns>
-        static ISubtitleParser GetWriterFor(string outputFileName)
-        {
-            return GetParserFor(outputFileName);
-        }
-
-        /// <summary>
-        /// Uses the extension of the filename to return the appropiate parser.
-        /// </summary>
-        /// <param name="fileName">A subtitle file</param>
-        /// <returns>A parser for the fileName</returns>
-        static ISubtitleParser GetParserFor(string fileName)
-        {
-            string extension = Path.GetExtension(fileName);
-
-            switch (extension)
-            {
-                case "srt":
-                    return new SubRipParser();
-                default:
-                    throw new UnsupportedSubtitleFormatException(fileName);
             }
         }
     }

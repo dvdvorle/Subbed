@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DvdV.Subbed.CLI
+namespace DvdV.Subbed.Core
 {
     [Serializable]
     public class UnsupportedSubtitleFormatException : Exception

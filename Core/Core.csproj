@@ -40,11 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\UnsupportedSubtitleFormatException.cs" />
     <Compile Include="Formats\BaseBeginEndSubtitle.cs" />
     <Compile Include="Formats\SubtitleManager.cs" />
     <Compile Include="Formats\ISubtitle.cs" />
     <Compile Include="Parsers\ISubtitleParser.cs" />
     <Compile Include="Parsers\SubRipParser.cs" />
+    <Compile Include="Parsers\SubtitleParserFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

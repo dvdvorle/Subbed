@@ -48,7 +48,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnsupportedSubtitleFormatException.cs" />
     <Compile Include="Verbs.cs" />
   </ItemGroup>
   <ItemGroup>
