@@ -1,0 +1,17 @@
+Subbed
+
+This C# solution contains a library project ("Core") which can be used to manipulate subtitle files.
+It also contains a CLI project ("CLI", imaginative huh) which I plan to keep in sync with the functionality of Core.
+
+I started this project because too many a times I noticed a sub is out of sync, and I just need a little tool to fix it.
+
+The format I use most is SubRip, but feel free to add other, as I will do too.
+
+Example user story:
+As a movie watcher
+When I see my subtitle is getting more and more out of sync
+I want to be able to pick a sentence, delay it by 2 seconds, and let the program calculate the remaining subtitle timings
+So that I can enjoy my movie
+
+Howto:
+DvdV.Subbed.CLI.exe subtitleFile.srt --extrapolate "Beginning of sentence I want delayed"+2
